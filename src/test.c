@@ -12,32 +12,27 @@ typedef struct node NODE;
 
 void creareLista(int n,NODE **head, FILE *input)
 {
-    NODE *p, *nod, *nou;
+    NODE *p, *nou;
     int i;
     double val;
-    
-    nod=(NODE *)malloc(sizeof(NODE));   //Creat si umplut primul element din lista
-
-    printf("%p\n",*head);
-    //fscanf(input, "%d", &n);
-    fscanf(input, "%lf", &val);
-    nod->valoare=val;
-    nod->next=NULL;
 
     p=(*head);
 
 
-    for(i=2;i<=n;i++)
+    for(i=1;i<=n;i++)
     {
         nou=(NODE *)malloc(sizeof(NODE));
         fscanf(input, "%lf", &val);
         nou->valoare=val;
         nou->next=NULL;
         
-        printf("%d: %lf, %p\n",i, nou->valoare, nou);
         p->next=nou;
         p=nou;
+
+        //printf("s a creat nodul %d la %p se uita la %p: %lf\n",i, p, p->next, p->valoare); //Pentru test lista
     }
+    //printf("Ultimul ultimul nod are adresa: %p\n", p);
+    //printf("In functie: ultimul next: %p\n",p->next);
 }
 
 int main(int argc, char *argv[])
@@ -65,27 +60,31 @@ int main(int argc, char *argv[])
     head=(NODE *)malloc(sizeof(NODE));
     nod=(NODE *)malloc(sizeof(NODE));
     fscanf(input, "%d", &n);
-    printf("n=%d\n",n);
+
+    printf("n=%d\n",n); //Verificare valoare n
+
     fscanf(input, "%lf", &val);
     nod->valoare=val;
     nod->next=NULL;
     head=nod;
 
+
+    //printf("Valoarea head: %lf, %p\n",head->valoare,head->next);  //Valoare HEAD
+
     creareLista(n, &head, input);
 
     NODE *p;
     p=(NODE *)malloc(sizeof(NODE));
-    int i=1;
+    int i=1; //Pentru afisare
 
-    printf("aici\n");
-    printf("%p",head);
-    printf("%p",head->next);
+    printf("%p\n",head); //Verificare head
+    printf("%p\n",head->next); //verificare head next
 
 
+    //For pentru verificat lista
     for(p=head; p->next != NULL; p=p->next)
     {
-        printf("\naici 2 %p ", p);
-        printf("Valoarea nodului %d: %lf",i,p->valoare);
+        printf("Valoarea nodului %d, %p se uita la %p: %lf\n",i,p,p->next,p->valoare);
         i++;
     }
 
