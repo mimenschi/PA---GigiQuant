@@ -35,6 +35,20 @@ void creareLista(int n,NODE **head, FILE *input)
     //printf("In functie: ultimul next: %p\n",p->next);
 }
 
+void stergereLista(NODE **head)
+{
+    NODE *p;
+
+    while((*head)!=NULL)
+    {
+        p=(*head)->next;
+        free(*head);
+        *head = p;
+    }
+    //free(p);
+    *head=NULL;
+}
+
 double calculRand(double p1, double p2)
 {
     return ( (p2-p1)/p1 )*1.0;
@@ -42,35 +56,50 @@ double calculRand(double p1, double p2)
 
 void adaugareRand(NODE *head)
 {
-    NODE *p=(NODE *)malloc(sizeof(NODE));
-    double rand;
+    NODE *p;
 
     for(p=head; p->next != NULL; p=p->next)
     {
-        rand=calculRand(p->valoare, (p->next)->valoare );
-
-        (p->next)->randament = rand; 
+        (p->next)->randament=calculRand(p->valoare, (p->next)->valoare );
     }
 }
 
 double randamentMediu(int n, NODE *head)
 {
         double suma=0, randMed=0;
-        NODE *p=(NODE *)malloc(sizeof(NODE));
+        NODE *p;
 
-        for(p=head; p!=NULL; p=p->next)
+        for(p=head->next; p!=NULL; p=p->next)
         {
             suma += p->randament;
         }
         
-        randMed = (1.0/n)*suma;
+        randMed = (1.0/(n-1) )*suma;
 
         return randMed;
 }
 
+double calculVolatilitate(int n, double ranMed, NODE *head)
+{
+    double volatilitate=0, suma=0;
+    NODE *p;
+    for(p=head->next; p!=NULL; p=p->next)
+    {
+        suma += pow(p->randament - ranMed, 2); 
+    }
 
+    volatilitate = sqrt( (1.0)/(n-1) * suma );
+    return volatilitate;
+}
 
-int main(int argc, char *argv[])
+double calculSharpeRaio(double randMed, double volatilitate)
+{
+    double sharpeR=0;
+    sharpeR = (1.0)*randMed / volatilitate;
+    return sharpeR;
+}
+
+int main(int argc, const char *argv[])
 {
     FILE *input, *output;
 
@@ -89,19 +118,17 @@ int main(int argc, char *argv[])
         exit(2);
     }
 
-    NODE *head, *nod;
+    NODE *head;
     double val;
     int n;
     head=(NODE *)malloc(sizeof(NODE));
-    nod=(NODE *)malloc(sizeof(NODE));
     fscanf(input, "%d", &n);
 
-    printf("n=%d\n",n); //Verificare valoare n
+    //printf("n=%d\n",n); //Verificare valoare n
 
     fscanf(input, "%lf", &val);
-    nod->valoare=val;
-    nod->next=NULL;
-    head=nod;
+    head->valoare=val;
+    head->next=NULL;
 
 
     //printf("Valoarea head: %lf, %p\n",head->valoare,head->next);  //Valoare HEAD
@@ -110,7 +137,7 @@ int main(int argc, char *argv[])
 
     adaugareRand(head);
 
-    
+    /*
     NODE *p;
     p=(NODE *)malloc(sizeof(NODE));
     int i=1; //Pentru afisare
@@ -127,12 +154,29 @@ int main(int argc, char *argv[])
         printf("Valoarea rand nodului %d: %lf si %lf\n",i,p->valoare,p->randament);
         i++;
     }
+        */
 
-    printf("\nRandamentul mediu este: %.3lf\n", randamentMediu(n,head));    ///RANDAMENT MEDIU OK 
-    
+    double randMed=0, volatilitate=0, sharpeR=0;
+    randMed = randamentMediu(n, head);
+    volatilitate = calculVolatilitate(n, randMed, head);
+    sharpeR = calculSharpeRaio(randMed, volatilitate);
 
+    randMed=((int)(randMed*1000))*1.0/1000;
+    volatilitate=((int)(volatilitate*1000))*1.0/1000;
+    sharpeR=((int)(sharpeR*1000))*1.0/1000;
+
+    /*
+    printf("\nRandamentul mediu este: %.3lf\n", randMed);    ///RANDAMENT MEDIU OK 
+    printf("\nVolatilitatea este: %.3lf\n", volatilitate);   ///
+    printf("\nShrapeR este: %.3lf\n", sharpeR);              ///
+    */
+
+    fprintf(output, "%.3lf\n", randMed);
+    fprintf(output, "%.3lf\n", volatilitate);
+    fprintf(output, "%.3lf\n", sharpeR);
+
+    stergereLista(&head);
     fclose(input);
     fclose(output);
-
     return 0;
 }
