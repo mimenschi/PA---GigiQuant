@@ -19,7 +19,7 @@ void creareLista(int n,NODE **head, FILE *input)
     p=(*head);
 
 
-    for(i=1;i<=n;i++)
+    for(i=2;i<=n;i++)
     {
         nou=(NODE *)malloc(sizeof(NODE));
         fscanf(input, "%lf", &val);
@@ -34,6 +34,41 @@ void creareLista(int n,NODE **head, FILE *input)
     //printf("Ultimul ultimul nod are adresa: %p\n", p);
     //printf("In functie: ultimul next: %p\n",p->next);
 }
+
+double calculRand(double p1, double p2)
+{
+    return ( (p2-p1)/p1 )*1.0;
+}
+
+void adaugareRand(NODE *head)
+{
+    NODE *p=(NODE *)malloc(sizeof(NODE));
+    double rand;
+
+    for(p=head; p->next != NULL; p=p->next)
+    {
+        rand=calculRand(p->valoare, (p->next)->valoare );
+
+        (p->next)->randament = rand; 
+    }
+}
+
+double randamentMediu(int n, NODE *head)
+{
+        double suma=0, randMed=0;
+        NODE *p=(NODE *)malloc(sizeof(NODE));
+
+        for(p=head; p!=NULL; p=p->next)
+        {
+            suma += p->randament;
+        }
+        
+        randMed = (1.0/n)*suma;
+
+        return randMed;
+}
+
+
 
 int main(int argc, char *argv[])
 {
@@ -73,20 +108,31 @@ int main(int argc, char *argv[])
 
     creareLista(n, &head, input);
 
+    adaugareRand(head);
+
+    
     NODE *p;
     p=(NODE *)malloc(sizeof(NODE));
     int i=1; //Pentru afisare
 
+    
     printf("%p\n",head); //Verificare head
     printf("%p\n",head->next); //verificare head next
-
+    
 
     //For pentru verificat lista
-    for(p=head; p->next != NULL; p=p->next)
+    
+    for(p=head; p != NULL; p=p->next)
     {
-        printf("Valoarea nodului %d, %p se uita la %p: %lf\n",i,p,p->next,p->valoare);
+        printf("Valoarea rand nodului %d: %lf si %lf\n",i,p->valoare,p->randament);
         i++;
     }
+
+    printf("\nRandamentul mediu este: %.3lf\n", randamentMediu(n,head));    ///RANDAMENT MEDIU OK 
+    
+
+    fclose(input);
+    fclose(output);
 
     return 0;
 }
