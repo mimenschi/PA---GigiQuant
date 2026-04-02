@@ -18,11 +18,8 @@ void creareLista(int n,NODE **head, FILE *input)
         
         p->next=nou;
         p=nou;
-
-        //printf("s a creat nodul %d la %p se uita la %p: %lf\n",i, p, p->next, p->valoare); //Pentru test lista
     }
-    //printf("Ultimul ultimul nod are adresa: %p\n", p);
-    //printf("In functie: ultimul next: %p\n",p->next);
+    
 }
 
 void stergereLista(NODE **head)
