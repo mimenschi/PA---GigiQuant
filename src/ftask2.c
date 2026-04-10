@@ -13,6 +13,7 @@ Q* createQ()
     q=(Q *)malloc(sizeof(Q));
     if(q == NULL)
     {
+        printf("Eroare: Coada creata prost\n");
         return NULL;
     }
     q->front = NULL;
@@ -20,49 +21,44 @@ Q* createQ()
     return q;
 }
 
-void enq(Q *q, float vpret)
+void enq(Q *q, float val)
 {
-    ACTIUNE *nou=(ACTIUNE *)malloc(sizeof(ACTIUNE));
-    nou->pret = vpret;
+    ACTIUNE *nou = (ACTIUNE *)malloc(sizeof(ACTIUNE));
+    nou->pret = val;
     nou->next = NULL;
-    if(q->rear == NULL)
+
+    if (q->rear == NULL)  // queue e empty
     {
-        (q->rear) = nou;
+        q->front = nou;
+        q->rear = nou;
     }
     else
     {
         (q->rear)->next = nou;
         q->rear = nou;
     }
-    if(q->front == NULL)
-    {
-        q->front = q->rear;
-    }
 }
 
 float deq(Q *q)
 {
-    ACTIUNE *aux;
-    aux=(ACTIUNE *)malloc(sizeof(ACTIUNE));
-    float v;
-    if(q->front == NULL)
+    if (q->front == NULL)
     {
-        return (-1);
-    } 
-    aux = q->front;
-    v=aux->pret;
-    q-> front =(q-> front )-> next ;
-    if (q-> front == NULL )
-    {
-        q-> rear = NULL;
+        return (float)(-1);  // q e empty 
     }
-    else
-    {
-        (q->front)->next = NULL;
-    }
-    free (aux);
 
-    return v;
+    ACTIUNE *aux = q->front;
+    float val = aux->pret;
+
+    q->front = (q->front)->next;
+
+    if (q->front == NULL)
+    {
+        q->rear = NULL;
+    }
+
+    free(aux);
+
+    return val;
 }
 
 

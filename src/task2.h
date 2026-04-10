@@ -2,7 +2,9 @@
 #include <stdlib.h>
 
 struct nod{
+    char oras[30];
     float pret;
+    int zi;
     struct nod *next;
 };
 

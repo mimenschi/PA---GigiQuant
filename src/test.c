@@ -65,6 +65,7 @@ int main(int argc, const char *argv[])
 
     //Task 2
 
+    ACTIUNE *topStack=NULL;
     
 
     //Inchiderea fisierleor
