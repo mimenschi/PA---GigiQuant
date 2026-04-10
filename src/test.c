@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "task1.h"
+#include "task2.h"
 
 int main(int argc, const char *argv[])
 {
@@ -21,6 +22,7 @@ int main(int argc, const char *argv[])
         exit(2);
     }
 
+    /*
     //Task 1
 
     //Head ul listei
@@ -57,6 +59,13 @@ int main(int argc, const char *argv[])
     stergereLista(&head);
 
     //End Task 1
+
+    */
+
+
+    //Task 2
+
+    
 
     //Inchiderea fisierleor
     fclose(input);
