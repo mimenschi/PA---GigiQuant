@@ -18,3 +18,4 @@ void adaugareRand(NODE *head);
 double randamentMediu(int n, NODE *head);
 double calculVolatilitate(int n, double ranMed, NODE *head);
 double calculSharpeRaio(double randMed, double volatilitate);
+double trunchiere(double val);

@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include "task1.h"
 
 int main(int argc, const char *argv[])
@@ -21,6 +20,8 @@ int main(int argc, const char *argv[])
         printf("Eroare, fisierul de output nu a putut fi deschis.\n");
         exit(2);
     }
+
+    //Task 1
 
     //Head ul listei
     NODE *head;
@@ -43,9 +44,9 @@ int main(int argc, const char *argv[])
     sharpeR = calculSharpeRaio(randMed, volatilitate);
 
     //Trunchierea valorilor calculate
-    randMed=((int)(randMed*1000))*1.0/1000;
-    volatilitate=((int)(volatilitate*1000))*1.0/1000;
-    sharpeR=((int)(sharpeR*1000))*1.0/1000;
+    randMed=trunchiere(randMed);
+    volatilitate=trunchiere(volatilitate);
+    sharpeR=trunchiere(sharpeR);
 
     //Printarea valorilor in fisierul de output
     fprintf(output, "%.3lf\n", randMed);
@@ -54,6 +55,8 @@ int main(int argc, const char *argv[])
 
     //Golirea listei
     stergereLista(&head);
+
+    //End Task 1
 
     //Inchiderea fisierleor
     fclose(input);

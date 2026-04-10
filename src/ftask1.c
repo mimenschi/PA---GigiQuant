@@ -87,3 +87,10 @@ double calculSharpeRaio(double randMed, double volatilitate)
     sharpeR = (1.0)*randMed / volatilitate;
     return sharpeR;
 }
+
+double trunchiere(double val)
+{
+    val=((int)(val*1000))*1.0/1000;
+    
+    return val;
+}
