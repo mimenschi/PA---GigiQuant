@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 struct node{
     double valoare;
@@ -19,3 +20,4 @@ double randamentMediu(int n, NODE *head);
 double calculVolatilitate(int n, double ranMed, NODE *head);
 double calculSharpeRaio(double randMed, double volatilitate);
 double trunchiere(double val);
+int verificareTask(char numeFile[]);
