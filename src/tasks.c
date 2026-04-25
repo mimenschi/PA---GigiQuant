@@ -8,13 +8,13 @@ int verificareTask(char numeFile[])
     {
         if (numeFile[i] >= '0' && numeFile[i] <= '9')
         {
-            numar = numar * 10 + (int)numeFile[i] - 48;
+            numar = numar * 10 + (int)numeFile[i] - 48; // -48 pentru a converti ASCII ul in cifre 0-9
         }
     }
 
     if(numar<=5) return 1;
-    else if(numar >= 6 && numar <= 10) return 2;
-    else if(numar >= 11 && numar <= 15) return 3;
+    else if(numar <= 10) return 2;
+    else if(numar <= 15) return 3;
     else return 4;
 
     return 0;
