@@ -4,6 +4,7 @@
 #include "tasks.h"
 #include "task1.h"
 #include "task2.h"
+#include "task3.h"
 
 int main(int argc, const char *argv[])
 {
@@ -101,6 +102,17 @@ int main(int argc, const char *argv[])
 
         fclose(input);
         fclose(output);
+
+        //End Task 2
+    }
+    else if(verificareTask(numeFile)==3)
+    {
+        float zi[11];
+
+        STOCK *a,*b;
+
+        FRUNZA *root;  
+
     }
 
     free(numeFile);
