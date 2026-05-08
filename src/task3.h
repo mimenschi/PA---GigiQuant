@@ -3,20 +3,25 @@
 #include <string.h>
 
 
-struct nod{
+struct nod3{
     char nume[5];
-    float stoc;
+    double stoc;
     int pozVect;
-    struct nod *next;
+    struct nod3 *next;
 };
 
-typedef struct nod STOCK;
+typedef struct nod3 STOCK;
 
 
-struct nod1{
+struct nod4{
     STOCK *head;
-    struct nod1 *left;
-    struct nod1 *right;
+    struct nod4 *left;
+    struct nod4 *right;
 };
 
-typedef struct nod1 FRUNZA;
+typedef struct nod4 FRUNZA;
+
+int numarLinii(FILE *input);
+void citireFirme(FILE *input, STOCK *head);
+void citireValori(FILE *input, double *valori, int linii);
+void insertValori(STOCK *head, double *valori, int start);

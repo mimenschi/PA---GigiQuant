@@ -107,12 +107,28 @@ int main(int argc, const char *argv[])
     }
     else if(verificareTask(numeFile)==3)
     {
-        float zi[11];
+        int linii=0;
 
-        STOCK *a,*b;
+        linii=numarLinii(input);
 
-        FRUNZA *root;  
+        fclose(input);
+        input=fopen(argv[1], "rb");
 
+        STOCK *head=(STOCK *)malloc(sizeof(STOCK));
+        strcpy(head->nume,"");
+
+        citireFirme(input, head);
+
+        double *valori=malloc(linii*10*sizeof(double));
+
+        citireValori(input, valori,linii);
+
+        int start=0;
+        for(start=0; start<linii; start++)
+        {
+            insertValori(head, valori, start);
+        }
+        
     }
 
     free(numeFile);
