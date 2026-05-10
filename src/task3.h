@@ -19,9 +19,12 @@ struct nod4{
     struct nod4 *right;
 };
 
-typedef struct nod4 FRUNZA;
+typedef struct nod4 ROOT;
 
 int numarLinii(FILE *input);
 void citireFirme(FILE *input, STOCK *head);
 void citireValori(FILE *input, double *valori, int linii);
-void insertValori(STOCK *head, double *valori, int start);
+void insertValori(STOCK *head, double *valori);
+void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *contor);
+void frunze(ROOT *root);
+void afisarePerechi(FILE *output, ROOT *stanga, ROOT *dreapta);

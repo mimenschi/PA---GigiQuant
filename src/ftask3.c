@@ -26,8 +26,8 @@ void citireFirme(FILE *input, STOCK *head)
     p->pozVect=poz;
     p->stoc=0;
 
-    do{
-        fscanf(input, "%c", &c);
+    while(fscanf(input, "%c", &c)==1 && c!='\n')
+    {
         if(c != ',')
         {
             p->nume[i]=c;
@@ -48,7 +48,8 @@ void citireFirme(FILE *input, STOCK *head)
             p=nou;
             strcpy(p->nume,"");
         }
-    }while(c != '\n');
+    }
+    p->nume[i]='\0';
 }
 
 void citireValori(FILE *input, double *valori, int linii)
@@ -61,7 +62,7 @@ void citireValori(FILE *input, double *valori, int linii)
         //pentru ca initial nu parcurgea cum doream fisierul asa ca am zis ok, pun -1 la i
         //dupa, cand am afisat vectorul, mergea doar pana la 39/49 49/59 29/39 etc.
         //dupa am zis ok, hai sa dau return direct la linii in loc de linii-1 la functia de linii
-        //ce vreau sa spun este ca desi este scris urat, isi face treaba corect
+        //ce vreau sa spun este ca am avut o logica minimala si desi este scris urat, isi face treaba corect
         for (i = j*10; i < (j+1)*10-1; i++) 
         {
             fscanf(input, "%lf,", &valori[i]);
@@ -71,12 +72,158 @@ void citireValori(FILE *input, double *valori, int linii)
 }
 
 
-void insertValori(STOCK *head, double *valori, int start)
+void insertValori(STOCK *head, double *valori)
 {
     int i;
     STOCK *p;
-    for(p=head, i=start; p!=NULL; p=p->next,i++)
+    for(p=head, i=0; p!=NULL; p=p->next,i++)
     {
         p->stoc=valori[i];
     }
+}
+
+void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *contor)
+{
+
+    if ((*head) == NULL)
+    {
+        return;
+    }
+
+    int i = 1;
+    int poz = (*head)->pozVect;
+
+    ROOT *q = root;
+    STOCK *p;
+    STOCK *urm = (*head)->next;
+    STOCK *nou = (*head);
+    nou->next = NULL;
+
+    while (i <= linii) // folosim numarul de linii ca si contor de zile
+    {
+        if (i < linii)
+        {
+            if ((*head)->stoc < valori[*contor + poz]) // se uita in vector doar la elementele care sunt pe pozitia firmei cu pozitia i in lista
+            {
+                if (q->right == NULL)
+                {
+                    q->right = (ROOT *)malloc(sizeof(ROOT));
+                }
+                q = q->right;
+            }
+            else
+            {
+                if (q->left == NULL)
+                {
+                    q->left = (ROOT *)malloc(sizeof(ROOT));
+                }
+                q = q->left;
+            }
+        }
+        else
+        {
+            // partea dreapta
+            if ((*head)->stoc < valori[*contor + poz])
+            {
+                if (q->right == NULL)
+                {
+                    q->right = (ROOT *)malloc(sizeof(ROOT));
+                }
+                if (q->right->head == NULL)
+                {
+                    q->right->head = nou;
+                }
+                else
+                {
+                    for (p = q->right->head; p->next != NULL; p = p->next)
+                        ;
+                    p->next = nou;
+                }
+            }
+
+            // partea stanga
+            else
+            {
+                if (q->left == NULL)
+                {
+                    q->left = (ROOT *)malloc(sizeof(ROOT));
+                }
+                if (q->left->head == NULL)
+                {
+                    q->left->head = nou;
+                }
+                else
+                {
+                    for (p = q->left->head; p->next != NULL; p = p->next)
+                        ;
+                    p->next = nou;
+                }
+            }
+        }
+        (*head)->stoc = valori[*contor + poz]; // suprascriem valoarea din nod a numarului pentru a putea compara cu urm zi
+        (*contor) += 10;                       // ne mutam pe urmatoarea zi
+        i++;
+    }
+
+    (*contor) = 10; // vrem sa revenim inapoi pe pozitia 10 adica la ziua 1
+    populateTree(root, &urm, valori, linii, contor);
+}
+
+void frunze(ROOT *root)
+{
+    if (root == NULL)
+        return;
+    frunze(root->left);
+
+    if (root->left == NULL && root->right == NULL)
+        for (STOCK *p = root->head; p != NULL; p = p->next)
+            printf("%s ", p->nume);
+    frunze(root->right);
+}
+
+void afisarePerechi(FILE *output, ROOT *stanga, ROOT *dreapta)
+{
+    // left face preorder
+    // right face postorder
+
+    // postordinea lui right
+    if (stanga == NULL || dreapta == NULL)
+        return;
+
+    // ambele sunt frunze
+    if (stanga->right == NULL && stanga->left == NULL && dreapta->right == NULL && dreapta->left == NULL)
+    {
+        STOCK *p, *q;
+        for (p = stanga->head; p != NULL; p = p->next)
+        {
+            for (q = dreapta->head; q != NULL; q = q->next)
+            {
+                if (p->pozVect > q->pozVect)
+                {
+                    //printf("%s-%s\n", q->nume, p->nume);
+                    fprintf(output, "%s-%s\n", q->nume, p->nume);
+                }
+                else
+                {
+                    fprintf(output, "%s-%s\n", p->nume, q->nume);
+                    //printf("%s-%s\n", q->nume, p->nume);
+                }
+            }
+        }
+        return;
+    }
+    // numai left este frunza
+    if (stanga->head != NULL && stanga->left == NULL && stanga->right == NULL)
+    {
+        afisarePerechi(output, stanga, dreapta->right);
+        afisarePerechi(output, stanga, dreapta->left);
+    }
+    // numai right este frunza
+    if (dreapta->head != NULL && dreapta->left == NULL && dreapta->right == NULL)
+    {
+        afisarePerechi(output, stanga->left, dreapta);
+        afisarePerechi(output, stanga->right, dreapta);
+    }
+    afisarePerechi(output, stanga->left, dreapta->right);
+    afisarePerechi(output, stanga->right, dreapta->left);
 }

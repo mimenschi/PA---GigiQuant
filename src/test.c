@@ -114,21 +114,49 @@ int main(int argc, const char *argv[])
         fclose(input);
         input=fopen(argv[1], "rb");
 
-        STOCK *head=(STOCK *)malloc(sizeof(STOCK));
-        strcpy(head->nume,"");
+        STOCK *lista=(STOCK *)malloc(sizeof(STOCK));
+        strcpy(lista->nume,"");
 
-        citireFirme(input, head);
+        citireFirme(input, lista);
+
+        STOCK *p;
+        /*
+        for(p=lista;p!=NULL;p=p->next)
+        {
+            printf("%s %d %lf\n",p->nume,p->pozVect,p->stoc);
+        }
+            */
 
         double *valori=malloc(linii*10*sizeof(double));
 
         citireValori(input, valori,linii);
 
-        int start=0;
-        for(start=0; start<linii; start++)
+        insertValori(lista, valori);
+
+        /*
+        for(p=lista;p!=NULL;p=p->next)
         {
-            insertValori(head, valori, start);
+            printf("%s %d %lf\n",p->nume,p->pozVect,p->stoc);
         }
+            */
+
+        ROOT *radacina=(ROOT *)malloc(sizeof(ROOT));
+        radacina->head=lista;
+        radacina->left=NULL;
+        radacina->right=NULL;
+
+        int nr=10;
+        populateTree(radacina,&lista,valori,linii,&nr);
         
+
+        frunze(radacina);
+
+
+        afisarePerechi(output, radacina->left, radacina->right);
+
+        free(lista);
+        free(valori);
+
     }
 
     free(numeFile);
