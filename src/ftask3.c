@@ -82,6 +82,8 @@ void insertValori(STOCK *head, double *valori)
     }
 }
 
+
+
 void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *contor)
 {
 
@@ -108,6 +110,9 @@ void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *con
                 if (q->right == NULL)
                 {
                     q->right = (ROOT *)malloc(sizeof(ROOT));
+                    q->right->left = NULL;
+                    q->right->right = NULL;
+                    q->right->head = NULL;
                 }
                 q = q->right;
             }
@@ -116,6 +121,9 @@ void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *con
                 if (q->left == NULL)
                 {
                     q->left = (ROOT *)malloc(sizeof(ROOT));
+                    q->left->left = NULL;
+                    q->left->right = NULL;
+                    q->left->head = NULL;
                 }
                 q = q->left;
             }
@@ -128,6 +136,9 @@ void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *con
                 if (q->right == NULL)
                 {
                     q->right = (ROOT *)malloc(sizeof(ROOT));
+                    q->right->left = NULL;
+                    q->right->right = NULL;
+                    q->right->head = NULL;
                 }
                 if (q->right->head == NULL)
                 {
@@ -147,6 +158,9 @@ void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *con
                 if (q->left == NULL)
                 {
                     q->left = (ROOT *)malloc(sizeof(ROOT));
+                    q->left->left = NULL;
+                    q->left->right = NULL;
+                    q->left->head = NULL;
                 }
                 if (q->left->head == NULL)
                 {
@@ -181,6 +195,7 @@ void frunze(ROOT *root)
     frunze(root->right);
 }
 
+/*
 void afisarePerechi(FILE *output, ROOT *stanga, ROOT *dreapta)
 {
     // left face preorder
@@ -188,26 +203,36 @@ void afisarePerechi(FILE *output, ROOT *stanga, ROOT *dreapta)
 
     // postordinea lui right
     if (stanga == NULL || dreapta == NULL)
+    {
         return;
+    }
+
+        printf("s-d: %p\n",stanga->right);
+        printf("s-s: %p\n",stanga->left);
+        printf("d-d: %p\n",dreapta->right);
+        printf("d-s: %p\n",dreapta->left);
 
     // ambele sunt frunze
     if (stanga->right == NULL && stanga->left == NULL && dreapta->right == NULL && dreapta->left == NULL)
     {
+        printf("%p",stanga->right);
+        printf("%p",stanga->left);
+        printf("%p",dreapta->right);
+        printf("%p",dreapta->left);
         STOCK *p, *q;
         for (p = stanga->head; p != NULL; p = p->next)
         {
+            printf("%p",p);
             for (q = dreapta->head; q != NULL; q = q->next)
             {
-                if (p->pozVect > q->pozVect)
-                {
+                    printf("%p",q);
+                
                     //printf("%s-%s\n", q->nume, p->nume);
-                    fprintf(output, "%s-%s\n", q->nume, p->nume);
-                }
-                else
-                {
-                    fprintf(output, "%s-%s\n", p->nume, q->nume);
+                    fprintf(output, "%s-%s\n", dreapta->head->nume, p->nume);
+                
+                    fprintf(output, "%s-%s\n", stanga->head->nume, q->nume);
                     //printf("%s-%s\n", q->nume, p->nume);
-                }
+                
             }
         }
         return;
@@ -226,4 +251,66 @@ void afisarePerechi(FILE *output, ROOT *stanga, ROOT *dreapta)
     }
     afisarePerechi(output, stanga->left, dreapta->right);
     afisarePerechi(output, stanga->right, dreapta->left);
+    
+}
+*/
+
+
+
+void vectorFrunze(ROOT *root, ROOT **frunze, int *contor)
+{
+    if(root == NULL)
+    {
+        return;
+    }
+
+    if(root->left == NULL && root->right == NULL)
+    {
+        if(root->head != NULL)
+        {
+            frunze[*contor] = root;
+            (*contor)++;
+        }
+        return ;
+    }
+
+    vectorFrunze(root->left, frunze, contor);
+    vectorFrunze(root->right, frunze, contor);
+}
+
+void afisarePerechi2(FILE *output, ROOT *root)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+
+    ROOT *frunze[512];
+    int nrFrunze = 0;
+
+    vectorFrunze(root, frunze, &nrFrunze);
+
+    int i = 0;
+    int j = nrFrunze - 1;
+
+    while (i < j)
+    {
+        STOCK *p, *q;
+        for (p = frunze[i]->head; p != NULL; p = p->next)
+        {
+            for (q = frunze[j]->head; q != NULL; q = q->next)
+            {
+                if (p->pozVect > q->pozVect)
+                {
+                    fprintf(output, "%s-%s\n", q->nume, p->nume);
+                }
+                else
+                {
+                    fprintf(output, "%s-%s\n", p->nume, q->nume);
+                }
+            }
+        }
+        i++;
+        j--;
+    }
 }

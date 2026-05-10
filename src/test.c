@@ -119,8 +119,9 @@ int main(int argc, const char *argv[])
 
         citireFirme(input, lista);
 
-        STOCK *p;
         /*
+        STOCK *p;
+        
         for(p=lista;p!=NULL;p=p->next)
         {
             printf("%s %d %lf\n",p->nume,p->pozVect,p->stoc);
@@ -151,11 +152,21 @@ int main(int argc, const char *argv[])
 
         frunze(radacina);
 
+        printf("%p\n",radacina->left);
+        printf("%p\n",radacina->right);
 
-        afisarePerechi(output, radacina->left, radacina->right);
+
+        //afisarePerechi(output, radacina->left, radacina->right);
+
+        
+        
+
+        afisarePerechi2(output, radacina);
+        
 
         free(lista);
         free(valori);
+        
 
     }
 
