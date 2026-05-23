@@ -5,6 +5,7 @@
 #include "task1.h"
 #include "task2.h"
 #include "task3.h"
+#include "task4.h"
 
 int main(int argc, const char *argv[])
 {
@@ -168,6 +169,42 @@ int main(int argc, const char *argv[])
         free(valori);
         
 
+    }
+    else
+    {
+        int observatii, zile;
+        float dimensiune, start, final;
+        citireParametrii(input, &observatii, &dimensiune, &zile, &start, &final);
+
+        int *valori = (int *)calloc(observatii, sizeof(int));
+
+        
+        vectorIntervale(input, start, valori, observatii);
+
+        for(int i=0;i<observatii;i++)
+        {
+            printf("v[%d]=%d \n",i,valori[i]);
+        }
+
+        int size=0;  //Numaram valorile diferite de zero
+
+        for(int i=0;i<observatii;i++)
+        {
+            if(valori[i] != 0)
+            {
+                size++;
+            }
+        }
+
+        valori=(int *)realloc(valori, size * sizeof(int));   //Realocam vectorul pentru a scapa de valorile 0
+
+        printf("\n");
+        for(int i=0;i<size;i++)
+        {
+            printf("v[%d]=%d \n",i,valori[i]);
+        }
+
+        free(valori);
     }
 
     free(numeFile);
