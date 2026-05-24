@@ -24,9 +24,9 @@ typedef struct nod4 ROOT;
 int numarLinii(FILE *input);
 void citireFirme(FILE *input, STOCK *head);
 void citireValori(FILE *input, double *valori, int linii);
-void insertValori(STOCK *head, double *valori);
+void insertValori(STOCK *head, const double *valori);
 void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *contor);
-void frunze(ROOT *root);
+void functieFrunze(ROOT *root);
 //void afisarePerechi(FILE *output, ROOT *stanga, ROOT *dreapta);
 
 void vectorFrunze(ROOT *root, ROOT **frunze, int *contor);

@@ -11,26 +11,6 @@ void citireParametrii(FILE *input, int *observatii, float *dimensiune, int *zile
     printf(" Observatii: %d\n Dimensiune: %f\n Zile: %d\n Start: %f\n Final:%f\n",*observatii, *dimensiune, *zile, *start, *final);
 }
 
-long long cmmdc(long long a, long long b)
-{
-    if(a<0)
-    {
-        a=-a;
-    }
-    if(b<0)
-    {
-        b=-b;
-    }
-    long long r;
-    while(b)
-    {
-        r=a%b;
-        a=b;
-        b=r;
-    }
-    return a;
-}
-
 void cmmdcVoid(long long *numarator, long long *numitor)
 {
     long long x,y;
@@ -58,13 +38,13 @@ void cmmdcVoid(long long *numarator, long long *numitor)
     }
 }
 
-void vectorIntervale(float valori[], int intervale[], float start, float dimensiune, int observatii, int *contInterval)
+void vectorIntervale(const float preturi[], int intervale[], float start, float dimensiune, int observatii, int *contInterval)
 {
     int i,j;
 
     for(i=0; i< observatii; i++)
     {
-        float capat = floor(valori[i] / dimensiune) * dimensiune;
+        float capat = floor(preturi[i] / dimensiune) * dimensiune;
 
         int ok=0; // presupunem ca capatul nu se afla deja in vector
         for(j=0; j<(*contInterval); j++)
@@ -119,7 +99,7 @@ void vectorValori(FILE *input, float start, float valori[], float *maxe, float *
     }
 }
 
-GRAPH *createGraf(int intervale[], int size, int observatii, float valori[], float dimensiune, float start)
+GRAPH *createGraf(const int intervale[], int size, int observatii, const float valori[], float dimensiune, float start)
 {
     GRAPH *g=(GRAPH *)malloc(sizeof(GRAPH));
     int i,j;
@@ -178,7 +158,7 @@ GRAPH *createGraf(int intervale[], int size, int observatii, float valori[], flo
 
 
 
-void lantMarkov(FILE *output, GRAPH *g, float preturi[], int intervale[], int size, float dimensiune, int zile, float start, float target)
+void lantMarkov(FILE *output, GRAPH *g, float preturi[], const int intervale[], int size, float dimensiune, int zile, float start, float target)
 {
     //IMPORTANT
     //  size este dimensiunea vectorului de intervale, adica si dimensiunea matricei de adiacenta
@@ -333,7 +313,7 @@ void lantMarkov(FILE *output, GRAPH *g, float preturi[], int intervale[], int si
 
 
 
-void afisareGraf(GRAPH *g)
+void afisareGraf(const GRAPH *g)
 {
     int i,j;
     for(i=0; i < g->V; i++)

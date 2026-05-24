@@ -7,6 +7,28 @@
 #include "task3.h"
 #include "task4.h"
 
+
+/*
+            ……..@*@*
+            ….@*……..@* …………………………@*
+            ..@*……………@* ………………@*……..@*
+            .@*……………….@*……….@*……………..@*
+            @*…………………..@*…@*………………….@*
+            @*………………………*……………………..@*
+            .@*…………………………………………….@*
+            ..@*………………………………………..@*
+            ….@*…………………………………..@*
+            ……..@*…………………………..@*
+            ………..@*……………………@*
+            …………….@*…………..@*
+            ……………….@*……@*
+            ………………….*..@*
+            ……………………@
+            ……………………*
+            ……………………@
+            ……………………*
+*/
+
 int main(int argc, const char *argv[])
 {
     FILE *input, *output;
@@ -151,7 +173,7 @@ int main(int argc, const char *argv[])
         populateTree(radacina,&lista,valori,linii,&nr);
         
 
-        frunze(radacina);
+        functieFrunze(radacina);
 
         printf("%p\n",radacina->left);
         printf("%p\n",radacina->right);
@@ -207,6 +229,12 @@ int main(int argc, const char *argv[])
         }
 
         intervale=(int *)realloc(intervale, sizeintervale*sizeof(int));
+        if(intervale == NULL)
+        {
+            free(intervale);
+            printf("Eroare la reacloc\n");
+            exit(3);
+        }
         //afisare intervale
         printf("Intervale: \n");
         for(int i=0;i<sizeintervale;i++)

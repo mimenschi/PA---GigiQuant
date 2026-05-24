@@ -72,7 +72,7 @@ void citireValori(FILE *input, double *valori, int linii)
 }
 
 
-void insertValori(STOCK *head, double *valori)
+void insertValori(STOCK *head, const double *valori)
 {
     int i;
     STOCK *p;
@@ -183,16 +183,16 @@ void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *con
     populateTree(root, &urm, valori, linii, contor);
 }
 
-void frunze(ROOT *root)
+void functieFrunze(ROOT *root)
 {
     if (root == NULL)
         return;
-    frunze(root->left);
+    functieFrunze(root->left);
 
     if (root->left == NULL && root->right == NULL)
         for (STOCK *p = root->head; p != NULL; p = p->next)
             printf("%s ", p->nume);
-    frunze(root->right);
+    functieFrunze(root->right);
 }
 
 /*

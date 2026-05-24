@@ -14,10 +14,9 @@ typedef struct graf GRAPH;
 
 void citireParametrii(FILE *input, int *observatii, float *dimensiune, int *zile, float *start, float *final);
 void vectorValori(FILE *input, float start, float valori[], float *maxe, float *mine);
-void vectorIntervale(float preturi[], int intervale[], float start, float dimensiune, int observatii, int *contInterval);
-GRAPH *createGraf(int intervale[], int size, int observatii, float valori[], float dimensiune, float start);
-long long cmmdc(long long a, long long b);
+void vectorIntervale(const float preturi[], int intervale[], float start, float dimensiune, int observatii, int *contInterval);
+GRAPH *createGraf(const int intervale[], int size, int observatii, const float valori[], float dimensiune, float start);
 void cmmdcVoid(long long *numarator, long long *numitor);
-void afisareGraf(GRAPH *g);
+void afisareGraf(const GRAPH *g);
 void golireGraf(GRAPH *g);
-void lantMarkov(FILE *output, GRAPH *g, float preturi[], int intervale[], int size, float dimensiune, int zile, float start, float target);
+void lantMarkov(FILE *output, GRAPH *g, float preturi[], const int intervale[], int size, float dimensiune, int zile, float start, float target);
