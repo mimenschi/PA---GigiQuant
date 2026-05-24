@@ -172,39 +172,62 @@ int main(int argc, const char *argv[])
     }
     else
     {
+        
         int observatii, zile;
         float dimensiune, start, final;
         citireParametrii(input, &observatii, &dimensiune, &zile, &start, &final);
 
-        int *valori = (int *)calloc(observatii, sizeof(int));
+        int *intervale = (int *)calloc(observatii, sizeof(int));
+        float *valori = (float *)calloc(observatii, sizeof(float));
 
         
-        vectorIntervale(input, start, valori, observatii);
+        float mine=500; //minimul valorilor din fisier
+        float maxe=-1;  //maximul valorilor din fisier
 
+        vectorValori(input, start, valori, &maxe, &mine);
+
+        int contor=0;
+
+        vectorIntervale(valori, intervale, start, dimensiune, observatii, &contor);
+
+        //afisare valori
+        printf("Valori: \n");
         for(int i=0;i<observatii;i++)
         {
-            printf("v[%d]=%d \n",i,valori[i]);
+            printf("v[%d]=%.2f \n",i,valori[i]);
         }
 
-        int size=0;  //Numaram valorile diferite de zero
-
+        int sizeintervale=0;
         for(int i=0;i<observatii;i++)
         {
-            if(valori[i] != 0)
+            if(intervale[i]!=0)
             {
-                size++;
+                sizeintervale++;
             }
         }
 
-        valori=(int *)realloc(valori, size * sizeof(int));   //Realocam vectorul pentru a scapa de valorile 0
-
-        printf("\n");
-        for(int i=0;i<size;i++)
+        intervale=(int *)realloc(intervale, sizeintervale*sizeof(int));
+        //afisare intervale
+        printf("Intervale: \n");
+        for(int i=0;i<sizeintervale;i++)
         {
-            printf("v[%d]=%d \n",i,valori[i]);
-        }
+            printf("v[%d]=%d \n",i,intervale[i]);
+        }  
 
+
+        GRAPH *g=createGraf(intervale, sizeintervale, observatii, valori, dimensiune, start);
+        afisareGraf(g);
+
+        lantMarkov(output, g, valori, intervale, sizeintervale, dimensiune, zile, start, final);
+
+        free(intervale);
         free(valori);
+
+        golireGraf(g);
+
+        fclose(input);
+        fclose(output);
+
     }
 
     free(numeFile);
