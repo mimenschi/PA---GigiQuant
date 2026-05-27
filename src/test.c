@@ -142,27 +142,11 @@ int main(int argc, const char *argv[])
 
         citireFirme(input, lista);
 
-        /*
-        STOCK *p;
-        
-        for(p=lista;p!=NULL;p=p->next)
-        {
-            printf("%s %d %lf\n",p->nume,p->pozVect,p->stoc);
-        }
-            */
-
         double *valori=malloc(linii*10*sizeof(double));
 
         citireValori(input, valori,linii);
 
         insertValori(lista, valori);
-
-        /*
-        for(p=lista;p!=NULL;p=p->next)
-        {
-            printf("%s %d %lf\n",p->nume,p->pozVect,p->stoc);
-        }
-            */
 
         ROOT *radacina=(ROOT *)malloc(sizeof(ROOT));
         radacina->head=lista;
@@ -172,24 +156,14 @@ int main(int argc, const char *argv[])
         int nr=10;
         populateTree(radacina,&lista,valori,linii,&nr);
         
-
-        functieFrunze(radacina);
-
-        printf("%p\n",radacina->left);
-        printf("%p\n",radacina->right);
-
-
-        //afisarePerechi(output, radacina->left, radacina->right);
-
-        
-        
-
         afisarePerechi2(output, radacina);
-        
+
 
         free(lista);
         free(valori);
         
+        fclose(input);
+        fclose(output);
 
     }
     else
@@ -212,12 +186,6 @@ int main(int argc, const char *argv[])
 
         vectorIntervale(valori, intervale, start, dimensiune, observatii, &contor);
 
-        //afisare valori
-        printf("Valori: \n");
-        for(int i=0;i<observatii;i++)
-        {
-            printf("v[%d]=%.2f \n",i,valori[i]);
-        }
 
         int sizeintervale=0;
         for(int i=0;i<observatii;i++)
@@ -235,12 +203,6 @@ int main(int argc, const char *argv[])
             printf("Eroare la reacloc\n");
             exit(3);
         }
-        //afisare intervale
-        printf("Intervale: \n");
-        for(int i=0;i<sizeintervale;i++)
-        {
-            printf("v[%d]=%d \n",i,intervale[i]);
-        }  
 
 
         GRAPH *g=createGraf(intervale, sizeintervale, observatii, valori, dimensiune, start);

@@ -27,7 +27,6 @@ void citireValori(FILE *input, double *valori, int linii);
 void insertValori(STOCK *head, const double *valori);
 void populateTree(ROOT *root, STOCK **head, double valori[], int linii, int *contor);
 void functieFrunze(ROOT *root);
-//void afisarePerechi(FILE *output, ROOT *stanga, ROOT *dreapta);
 
 void vectorFrunze(ROOT *root, ROOT **frunze, int *contor);
 void afisarePerechi2(FILE *output, ROOT *root);
