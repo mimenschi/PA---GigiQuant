@@ -158,6 +158,8 @@ int main(int argc, const char *argv[])
         
         afisarePerechi2(output, radacina);
 
+        golireLista(lista);
+        golireArbore(radacina);
 
         free(lista);
         free(valori);

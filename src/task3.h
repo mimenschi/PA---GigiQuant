@@ -30,3 +30,6 @@ void functieFrunze(ROOT *root);
 
 void vectorFrunze(ROOT *root, ROOT **frunze, int *contor);
 void afisarePerechi2(FILE *output, ROOT *root);
+
+void golireLista(STOCK *head);
+void golireArbore(ROOT *root);

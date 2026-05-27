@@ -147,6 +147,7 @@ GRAPH *createGraf(const int intervale[], int size, int observatii, const float v
             }
         }
 
+        //mati si matj sunt indicii pentru matrice. daca amandoi exista atunci se mareste matricea de adiacenta cu 1
         if(mati != -1 && matj != -1)
         {
             g->matrice[mati][matj]++;
@@ -208,6 +209,7 @@ void lantMarkov(FILE *output, GRAPH *g, float preturi[], const int intervale[], 
         numarator[starti] = 1;
     }
 
+    //numarul de iesiri pentru fractie
     for(i=0; i < g->V; i++)
     {
         for(j=0;j<g->V;j++)
@@ -238,13 +240,17 @@ void lantMarkov(FILE *output, GRAPH *g, float preturi[], const int intervale[], 
 
         for(i=0;i<g->V;i++)
         {
+            //daca fractia a fost initializata iar numarul de iesiri este diferit de zero
             if( numarator[i] > 0 && numariesiri[i] > 0 )
             {
                 for(j=0;j<g->V;j++)
                 {
                     if(g->matrice[i][j]>0)
                     {
+                        //numaratorul se inmulteste cu valoarea din matrice
                         long long numaratorprob = numarator[i] * g->matrice[i][j];
+
+                        //numitorul se inmulteste cu numarul de ieisir din nod
                         long long numitorprob = numitor[i] * numariesiri[i];
 
                         if(numarator_next[j] == 0)  //daca fractia e goala
@@ -254,12 +260,14 @@ void lantMarkov(FILE *output, GRAPH *g, float preturi[], const int intervale[], 
                         }
                         else
                         {
+                            //se compune noua fractie
                             long long numarator_comun = numarator_next[j] * numitorprob + numaratorprob * numitor_next[j];
                             long long numitor_comun = numitor_next[j] * numitorprob;
                             
                             numarator_next[j] = numarator_comun;
                             numitor_next[j] = numitor_comun;
                         }
+                        //se aduce la forma sa ireductibila
                         cmmdcVoid(&numarator_next[j], &numitor_next[j]);
                     }
                 }
@@ -272,6 +280,7 @@ void lantMarkov(FILE *output, GRAPH *g, float preturi[], const int intervale[], 
             numitor[i] = numitor_next[i];
         }
 
+        //daca e ultima zi
         if (astazi == zile - 2)
         {
             if (finali == -1 || numarator[finali] == 0)
@@ -287,6 +296,7 @@ void lantMarkov(FILE *output, GRAPH *g, float preturi[], const int intervale[], 
                 fprintf(output, "%lld/%lld", numarator[finali], numitor[finali]);
             }
         }
+        //daca e orice alta zi
         else
         {
             if (finali == -1 || numarator[finali] == 0)
